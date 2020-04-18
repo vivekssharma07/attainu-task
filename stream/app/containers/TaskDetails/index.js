@@ -7,12 +7,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import { toast } from 'react-toastify'
-import styled from 'styled-components'
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -34,7 +32,8 @@ import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import _ from 'lodash';
 import io from "socket.io-client";
-const socket = io(`http://localhost:5000`);
+import { localUrl } from '../Library/constants';
+const socket = io(localUrl);
 
 /* eslint-disable react/prefer-stateless-function */
 export class TaskDetails extends React.PureComponent {
@@ -68,11 +67,10 @@ export class TaskDetails extends React.PureComponent {
       url: `tasks/delete/${row._id}`,
     }
     let taskDel = await apiPost(data)
-     console.log("Task Delete ", taskDel)
+
     if (taskDel.data > 0) {
       socket.emit("fetchAll");
       socket.on('taskDetails',(data) => {
-        console.log("Data >>",data)
         this.setState({ rows: data })
       })
 
@@ -100,7 +98,6 @@ export class TaskDetails extends React.PureComponent {
   componentDidMount = async () => {
     socket.emit("fetchAll");
     socket.on('taskDetails',(data) => {
-      console.log("Data >>",data)
       this.setState({ rows: data })
     })
     

@@ -1,5 +1,8 @@
 const Task = require('../Models/TaskModel');
 
+/**
+ * Function to create task 
+ */
 const createTask = (req, res) => {
     try {
 
@@ -23,6 +26,9 @@ const createTask = (req, res) => {
     }
 };
 
+/**
+ *  Fetch TaskDetails based on user id
+ */
 const getTaskByUserId = async (req, res) => {
     try {
         const { id } = req.body;
@@ -34,6 +40,10 @@ const getTaskByUserId = async (req, res) => {
         res.send(500, { status: false, message: "Something went to wrong", error: err });
     }
 };
+
+/**
+ * Fetch Task Details for all the users
+ */
 const fetchAllTask = async (req, res) => {
     try {
         Task.aggregate([
@@ -79,6 +89,9 @@ const fetchAllTask = async (req, res) => {
     }
 };
 
+/*
+*Get Task Details based on user id
+*/
 const fetchTaskById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -94,6 +107,9 @@ const fetchTaskById = async (req, res) => {
     }
 };
 
+/**
+ * Update Task based on UserId and Task Id
+ */
 const updateTask = async (req, res) => {
     try {
         const { id } = req.params;
@@ -116,6 +132,9 @@ const updateTask = async (req, res) => {
 
 };
 
+/**
+ * Delete Task Based on UserID and TaskID
+ */
 const deleteTask = async (req, res) => {
     try {
         const { id } = req.params;

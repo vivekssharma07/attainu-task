@@ -2,6 +2,9 @@ const bcrypt = require('bcrypt');
 const UserModel = require('../Models/UserModel');
 const jwt = require('jsonwebtoken');
 
+/**
+ * Register New user
+ */
 const RegisterUser = (req, res) => {
  
    try {
@@ -44,6 +47,9 @@ const RegisterUser = (req, res) => {
 
 }
 
+/*
+*  Login validation for the users
+*/
 const LoginUser = (req, res) => {
    UserModel.findOne({ email: req.body.email }).exec()
       .then(function (user) {

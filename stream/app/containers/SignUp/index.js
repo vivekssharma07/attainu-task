@@ -35,25 +35,51 @@ import { validateInputs, copyObj, apiPost, validEmailRegex } from '../Library'
 /* eslint-disable react/prefer-stateless-function */
 export class SignUp extends React.PureComponent {
   state = {
-    first_name: '',
-    last_name: '',
-    email: '',
-    password: '',
-    confirm_password: ''
+    user_details: {
+      first_name: '',
+      last_name: '',
+      email: '',
+      password: '',
+      confirm_password: ''
+    },
+    errors: {}
   }
 
   // onInputChnage
   onInputChange = (e) => {
+    const validEmailRegex = RegExp(
+      /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
+    );
     const { name, value } = e.target
+    let errVal;
+    switch (name) {
+      case 'email':
+        errVal = !validEmailRegex.test(value) ? 'Email is not Valid' : ''
+        break;
+      case 'password':
+        errVal = value.length <= 7 ? 'Weak Password' : 'Strong Password';
+        break;
+      case 'retype_password':
+        const comparePwd = this.state.user_details.password.localeCompare(value)
+        errVal = comparePwd === 0 ? '' : 'Password is mismatched'
+        break;
+      default:
+    }
     this.setState({
-      [name]: value
-    })
+      errors: {
+        ...this.state.errors,
+        [name]: errVal !== 'undefined' ? errVal : '',
+      },
+    });
+    this.setState({
+      user_details: { ...this.state.user_details, [name]: value },
+    });
   }
 
   SubmitRegisterForm = async () => {
-    const inputs = copyObj(this.state)
+    const inputs = copyObj(this.state.user_details)
     let errors = validateInputs(inputs)
-    //console.log('login errors', errors)
+    console.log('login errors', errors)
 
     if (Object.keys(errors).length === 0) {
       let data = {
@@ -63,7 +89,7 @@ export class SignUp extends React.PureComponent {
       let userObj = await apiPost(data)
       if (userObj.status) {
         const { data } = userObj
-        this.props.history.push('/login')
+        this.props.history.push('/task')
 
         Alert.success(userObj.message, {
           position: 'top-right',
@@ -88,7 +114,7 @@ export class SignUp extends React.PureComponent {
   }
 
   render() {
-    const { first_name, last_name, email, password, confirm_password } = this.state;
+    const { user_details,errors } = this.state;
 
     return (
       <div>
@@ -107,7 +133,7 @@ export class SignUp extends React.PureComponent {
                   autoComplete="fname"
                   name="first_name"
                   onChange={this.onInputChange}
-                  value={first_name}
+                  value={user_details.first_name}
                   variant="outlined"
                   required
                   fullWidth
@@ -119,7 +145,7 @@ export class SignUp extends React.PureComponent {
               <Grid item xs={12} sm={6}>
                 <TextField
                   variant="outlined"
-                  value={last_name}
+                  value={user_details.last_name}
                   onChange={this.onInputChange}
                   required
                   fullWidth
@@ -132,7 +158,7 @@ export class SignUp extends React.PureComponent {
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
-                  value={email}
+                  value={user_details.email}
                   onChange={this.onInputChange}
                   required
                   fullWidth
@@ -145,7 +171,7 @@ export class SignUp extends React.PureComponent {
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
-                  value={password}
+                  value={user_details.password}
                   onChange={this.onInputChange}
                   required
                   fullWidth
@@ -159,7 +185,7 @@ export class SignUp extends React.PureComponent {
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
-                  value={confirm_password}
+                  value={user_details.confirm_password}
                   onChange={this.onInputChange}
                   required
                   fullWidth
@@ -168,12 +194,6 @@ export class SignUp extends React.PureComponent {
                   type="password"
                   id="confirm_password"
                   autoComplete="current-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid>
             </Grid>

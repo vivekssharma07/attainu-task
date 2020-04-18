@@ -24,7 +24,7 @@ mongoose.connect(MONGO_URL, { useNewUrlParser: true, useCreateIndex: true }).the
 })
 
 /** 
- * API to fetch all the task details added by users
+ * API to fetch all the task details added by users using socketIo
 */
 
 io.on('connection', (socket) => {

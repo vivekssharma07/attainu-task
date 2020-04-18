@@ -8,12 +8,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import { toast } from 'react-toastify'
-
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import makeSelectTask from './selectors';
@@ -25,7 +23,8 @@ import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import { validateInputs, copyObj, apiPost, validEmailRegex } from '../Library'
 import io from "socket.io-client";
-const socket = io(`http://localhost:5000`);
+import { localUrl } from '../Library/constants';
+const socket = io(localUrl);
 
 /* eslint-disable react/prefer-stateless-function */
 export class Task extends React.PureComponent {
@@ -57,7 +56,7 @@ export class Task extends React.PureComponent {
         })
       } else {
         this.props.history.push('/task')
-        console.log("Error Occured")
+
         toast.success('Error Occured', {
           position: 'bottom-right',
           autoClose: 5000,
@@ -72,7 +71,6 @@ export class Task extends React.PureComponent {
   onSubmitForm = async (e) => {
     const inputs = copyObj(this.state.task)
     let errors = validateInputs(inputs)
-    console.log('login errors', errors)
 
     if (Object.keys(errors).length === 0) {
       console.log("State Value", this.state)
@@ -81,14 +79,14 @@ export class Task extends React.PureComponent {
         body: inputs
       }
       let taskObj = await apiPost(data)
-      //console.log("New Task Res", taskObj)
+
       if (taskObj.status) {
         this.props.history.push('/task')
         socket.emit("fetchAll");
         socket.on('taskDetails',(data) => {
-          console.log("Data >>",data)
           this.setState({ rows: data })
         })
+
         toast.success("Successfully Updated", {
           position: 'bottom-right',
           autoClose: 5000,
@@ -117,13 +115,14 @@ export class Task extends React.PureComponent {
   }
 
   render() {
-    const { task} = this.state
+    const { task,id} = this.state
     return (
       <div>
         <Helmet>
           <title>Task</title>
           <meta name="description" content="Description of Task" />
         </Helmet>
+        <h1 className=''>{id ? 'EDIT Task' : 'ADD Task'}</h1>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <div className="paper">
