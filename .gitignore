@@ -1,0 +1,22 @@
+./node_modules
+./stream/node_modules
+# Don't check auto-generated stuff into git
+stream/coverage
+stream/build
+stream/node_modules
+stream/stats.json
+
+# Cruft
+stream/.DS_Store
+stream/npm-debug.log
+stream/.idea
+# Don't check auto-generated stuff into git
+coverage
+build
+node_modules
+stats.json
+
+# Cruft
+.DS_Store
+npm-debug.log
+.idea
