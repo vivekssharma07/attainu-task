@@ -6,3 +6,6 @@ A react and node app which uses socket io concept.
 4.  A user should be able to update/delete a todo from the UI ( only his own task ).
 
 Tech Stack Used ReactJs,NodeJs,MongoDB
+To run this project you have to do npm install at two places 
+1. parent folder for nodeJS
+2. child folder for reactJS
