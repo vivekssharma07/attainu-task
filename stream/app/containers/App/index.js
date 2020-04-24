@@ -7,13 +7,13 @@
  */
 
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { ToastContainer } from 'react-toastify';
 import { Switch, Route } from 'react-router-dom';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import ToasterStyle from './toaster';
 import Header from 'components/Header';
+import Footer from 'components/Footer';
 import SignIn from 'containers/singIn/Loadable';
 import SignUp from 'containers/signUp/Loadable';
 import TaskDetails from 'containers/taskDetails/Loadable';
@@ -22,29 +22,41 @@ import GlobalStyle from '../../global-styles';
 import { PrivateRoute, CheckToken, PrivateRouteLogin } from '../Library';
 
 const AppWrapper = styled.div`
-  max-width: calc(900px + 150px * 2);
+  max-width: calc(950px + 180px * 2);
   margin: 0 auto;
   display: flex;
-  min-height: 100%;
+  min-height: 75vh;
   padding: 0 16px;
   flex-direction: column;
 `;
 
+const MainWrapper = styled.div`
+padding: 0 16px;
+padding: 30px;
+align-items: center;
+padding: 1rem;
+background-color:#e9ffff;
+`;
+
 export default function App() {
-  return (
-    <AppWrapper>
-      <Header />
-      <Switch>
-        <Route exact path="/" component={SignIn} />
-        <PrivateRoute exact path="/register" component={SignUp} />
-        <PrivateRoute exact path="/task" component={TaskDetails} />
-        <PrivateRoute exact path="/task/add" component={Task} />
-        <PrivateRoute exact path="/task/edit/:id" component={Task} />
-        <Route component={NotFoundPage} />
-      </Switch>
-      <GlobalStyle />
-      <ToastContainer />
-      <ToasterStyle />
-    </AppWrapper> 
+  return (<React.Fragment>
+    <Header />
+    <MainWrapper>
+      <AppWrapper>
+        <Switch>
+          <Route exact path="/" component={SignIn} />
+          <Route exact path="/register" component={SignUp} />
+          <PrivateRoute exact path="/task" component={TaskDetails} />
+          <PrivateRoute exact path="/task/add" component={Task} />
+          <PrivateRoute exact path="/task/edit/:id" component={Task} />
+          <Route component={NotFoundPage} />
+        </Switch>
+        <GlobalStyle />
+        <ToastContainer />
+        <ToasterStyle />
+      </AppWrapper>
+    </MainWrapper>
+    <Footer />
+  </React.Fragment>
   );
 }

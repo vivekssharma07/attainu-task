@@ -86,7 +86,12 @@ const LoginUser = (req, res) => {
       });;
 }
 
+const LogoutUser = (req,res) => {
+      req.logout();
+      res.redirect('/')
+}
 module.exports = {
    RegisterUser,
-   LoginUser
+   LoginUser,
+   LogoutUser
 }

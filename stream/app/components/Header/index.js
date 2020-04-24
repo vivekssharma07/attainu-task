@@ -1,32 +1,62 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
-
-import A from './A';
-import Img from './Img';
-import NavBar from './NavBar';
-import HeaderLink from './HeaderLink';
-import Banner from './banner.jpg';
-import messages from './messages';
+import { connect } from 'react-redux'
+import { NavLink } from 'react-router-dom';
+import { withRouter } from 'react-router-dom'
 
 /* eslint-disable react/prefer-stateless-function */
 class Header extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      show: false,
+      display: false,
+    };
+  }
+
+  componentDidMount() {
+
+  }
+
+  openPopover = () => {
+    this.setState({
+      display: !this.state.display,
+    });
+  };
+
+  userLogout = () => {
+    console.log("comessss")
+    localStorage.removeItem("user_id");
+    localStorage.removeItem("token");
+    window.location.href = '/'
+  };
+
   render() {
+    const token = localStorage.getItem('token')
+    const { display } = this.state;
+
     return (
-      <div>
-        <NavBar>
-          <HeaderLink to="/">
-            <FormattedMessage {...messages.login} />
-          </HeaderLink>
-          <HeaderLink to="/register">
-            <FormattedMessage {...messages.signUp} />
-          </HeaderLink>
-          <HeaderLink to="/task">
-            <FormattedMessage {...messages.task} />
-          </HeaderLink>
-        </NavBar>
+      <div className="navbar-container">
+        <div className="logo-text-wrapper">
+          <h1 className="font-xl text-light ml-3">App</h1>
+        </div>
+        {token ? (<div className="menu-wrapper">
+          <React.Fragment><NavLink exact activeClassName='selected-Link'
+            to='/task' className='menu-link'>Task Details</NavLink>
+            <a onClick={this.userLogout} className="menu-link selected-Link">Logout</a>
+          </React.Fragment>
+        </div>) : ''}
       </div>
-    );
+    )
   }
 }
 
-export default Header;
+const mapStateToProps = (state) => ({
+  //user: state.default.user,
+})
+
+const mapDispatchToProps = {
+
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header))
+

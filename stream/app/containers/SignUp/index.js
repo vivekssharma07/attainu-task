@@ -215,9 +215,6 @@ export class SignUp extends React.PureComponent {
               </Grid>
             </Grid>
           </div>
-          <Box mt={5}>
-            <Copyright />
-          </Box>
         </Container>
       </div>
     );
