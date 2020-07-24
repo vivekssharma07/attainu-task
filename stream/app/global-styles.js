@@ -93,7 +93,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 10px 40px;
     display: flex;
     color: #ffffff;
-    background: #060606;
+    background: #cacaca;
     justify-content: space-between;
     align-items: center;
   }
@@ -182,6 +182,10 @@ const GlobalStyle = createGlobalStyle`
     background: #ffffff;
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.4);
     border-radius: 6px;
+  }
+  .nav-bar-r{
+    display:flex;
+    float:right:
   }
 `;
 

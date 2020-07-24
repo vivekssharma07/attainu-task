@@ -8,6 +8,7 @@ const app = express();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 const Task = require('./Models/TaskModel');
+const keys = require('./Config/keys')
 
 app.use(cors());
 /* Parsing the Data from client side (Json Format) */
@@ -17,10 +18,9 @@ app.use('/user', user);
 app.use('/tasks', product);
 
 let port = 5000;
-let MONGO_URL = 'mongodb+srv://root:Vivek07$@cluster0-wemqu.mongodb.net/user-listing?retryWrites=true&w=majority'
 
-mongoose.connect(MONGO_URL, { useNewUrlParser: true, useCreateIndex: true }).then(() => {
-    console.log("Connected to Mongo database")
+mongoose.connect(keys.MONGO_URI, { useNewUrlParser: true },()=>{
+    console.log("Connected to database Successfully!")
 })
 
 /** 

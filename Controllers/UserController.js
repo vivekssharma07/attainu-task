@@ -1,12 +1,13 @@
 const bcrypt = require('bcrypt');
 const UserModel = require('../Models/UserModel');
 const jwt = require('jsonwebtoken');
+const smsClient = require("../Config/smsClient");
 
 /**
  * Register New user
  */
 const RegisterUser = (req, res) => {
- 
+
    try {
       const { first_name, last_name, email, password, confirm_password } = req.body;
       UserModel.findOne({ email: req.body.email })
@@ -25,14 +26,14 @@ const RegisterUser = (req, res) => {
                bcrypt.genSalt(10, (err, salt) => {
                   bcrypt.hash(newUser.password, salt, (err, hash) => {
                      if (err) {
-                        res.send(500, { status: false, message:"Error", data: err });       
+                        res.send(500, { status: false, message: "Error", data: err });
                      }
-                     
+
                      newUser.password = hash;
                      newUser.confirm_password = hash;
                      newUser.save()
                         .then(user => {
-                           res.send(200, { status: true, message:"Success", data: user });       
+                           res.send(200, { status: true, message: "Success", data: user });
                         })
                         .catch(err => console.log(err))
                   })
@@ -86,12 +87,29 @@ const LoginUser = (req, res) => {
       });;
 }
 
-const LogoutUser = (req,res) => {
-      req.logout();
-      res.redirect('/')
+/**
+ * Send SMS via text local
+ */
+const sendSMS = (req, res) => {
+   try {
+      smsClient.sendTextSMS(req.body, (err, result) => {
+         if (err) {
+            return res.send(err)
+         } 
+         res.send(200, { status: true, message: "Success", data: result });
+      });
+   } catch (err) {
+      res.send(500, { status: false, message: "Something went to wrong", error: err });
+   }
+}
+
+const LogoutUser = (req, res) => {
+   req.logout();
+   res.redirect('/')
 }
 module.exports = {
    RegisterUser,
    LoginUser,
-   LogoutUser
+   LogoutUser,
+   sendSMS
 }

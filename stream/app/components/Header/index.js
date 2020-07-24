@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { NavLink } from 'react-router-dom';
-import { withRouter } from 'react-router-dom'
+import { withRouter, Switch, Route, NavLink } from 'react-router-dom'
 
 /* eslint-disable react/prefer-stateless-function */
 class Header extends React.Component {
@@ -36,8 +35,12 @@ class Header extends React.Component {
 
     return (
       <div className="navbar-container">
+        <div>
+          <h1 className="font-xl text-light ml-3">E-Learning</h1>
+        </div>
         <div className="logo-text-wrapper">
-          <h1 className="font-xl text-light ml-3">App</h1>
+          <NavLink exact activeClassName='selected-Link' to='/' className='menu-link'>Login</NavLink>
+          <NavLink exact activeClassName='selected-Link' to='/register' className='menu-link'>SignUp</NavLink>
         </div>
         {token ? (<div className="menu-wrapper">
           <React.Fragment><NavLink exact activeClassName='selected-Link'

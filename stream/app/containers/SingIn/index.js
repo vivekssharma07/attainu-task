@@ -74,7 +74,7 @@ export class SingIn extends React.PureComponent {
           closeOnClick: true,
           draggable: true,
         });
-        
+
 
       } else {
         toast.success("Something Went Wrong", {
@@ -140,22 +140,19 @@ export class SingIn extends React.PureComponent {
             >
               Sign In
           </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
+              {/* <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
               </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/register" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-          </div>
-          <Box mt={8}>
-            <Copyright />
-          </Box>
+                </Grid>
+                <Grid item>
+                  <Link href="/register" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              </Grid> */}
+            </div>
         </Container>
       </div>
     );
@@ -165,28 +162,28 @@ export class SingIn extends React.PureComponent {
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        <Typography variant="body2" color="textSecondary" align="center">
+          {'Copyright © '}
+          <Link color="inherit" href="https://material-ui.com/">
+            Your Website
       </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
+          {new Date().getFullYear()}
+          {'.'}
+        </Typography>
   );
 }
 
 SingIn.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+          dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  singIn: makeSelectSingIn(),
+          singIn: makeSelectSingIn(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+          dispatch,
   };
 }
 
